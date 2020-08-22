@@ -1,11 +1,10 @@
-0;
-
+1;
 function A = g(X)
   A = tanh(X);
 endfunction
 
 function A = g_(x)
-  A = 1 - g(x).*g(xg_);
+  A = 1 - g(x).*g(x);
 endfunction
 
 function [x_, m] = preprocess(x)
@@ -14,15 +13,13 @@ function [x_, m] = preprocess(x)
   
   %whitening the centered data
   [E, val] = eig(cov(x_'), "vector");
-  val
-  val = 1./sqrt(val)
-  E
-  D = diag(val)
+  val = 1./sqrt(val);
+  D = diag(val);
   x_ = real(E*D*E'*x_);
 endfunction
  
 function n = norm(X)
-  return sqrt(sum(X.*X))
+  n = sqrt(sum(X.*X))
 endfunction
 
 function w_ = newW(w, x)
@@ -36,25 +33,27 @@ function [S,W] = ica(x, iter, eps=1e-16)
   W = zeros(N,N)
   
   for i = 1:N
-    w = rand(1,N)
+    w = rand(N,1)
     for j = 1:iter
-      w_new = newW(w, x_)
+      w_new = newW(w, x_);
       %w_new -= (W[:,:i].dot((np.dot(w_new, W[:,:i])).T)).T
-      w_new -= (W(:, 1:i)*(w_new*W(:,1:i)))'
-      w_new = w_new/norm(w_new)
+      w_new -= W(:, 1:i)*(w_new'*W(:,1:i))';
+      w_new = w_new/norm(w_new);
       
-      dot = w_new*w'
+      dot = w_new*w';
       if(abs(1-dot) < eps)
         w = w_new
         break
       endif
       
-      w = w_new
+      w = w_new;
     endfor
-    W(:,i) = w
+    W(:,i) = w;
   endfor
   
-  S = W*x_
+  S = W*x_;
 endfunction
+
+
   
 
