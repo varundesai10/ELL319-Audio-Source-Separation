@@ -40,7 +40,7 @@ function [S,W] = ica(x, iter, eps=1e-16)
     for j = 1:iter
       w_new = newW(w, x_)
       %w_new -= (W[:,:i].dot((np.dot(w_new, W[:,:i])).T)).T
-      w_new -= (W(:, 1:i)*(w_new*W(:,1:i))')'
+      w_new -= (W(:, 1:i)*(w_new*W(:,1:i)))'
       w_new = w_new/norm(w_new)
       
       dot = w_new*w'
